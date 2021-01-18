@@ -1,26 +1,18 @@
 package br.com.neppo.kbase.knowledgebase.domain.model;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.List;
 
-@Entity
-@Table(name = "category")
 @Data
+@Entity
+@Table( name = "profile")
 @AllArgsConstructor
-@NoArgsConstructor
-public class Category {
+public class Profile {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private String description;
-    private String slug;
 
-    @OneToMany
-    private List<Section> section;
 }

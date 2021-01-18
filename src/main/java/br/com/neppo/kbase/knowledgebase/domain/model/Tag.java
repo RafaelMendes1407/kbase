@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.time.OffsetDateTime;
 import java.util.List;
 
@@ -17,12 +18,22 @@ public class Tag {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @NotBlank
     private String title;
     private String slug; // ??
-    private OffsetDateTime createdAt;
+    private OffsetDateTime createdAt = OffsetDateTime.now();
+
+    @OneToOne
+    @JoinColumn(referencedColumnName="id")
     private User createdBy;
+
+    @OneToOne
+    @JoinColumn(referencedColumnName="id")
     private User updateBy;
     private OffsetDateTime updatedAt;
+
+    @ManyToOne
     private Section section;
 
 

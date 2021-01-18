@@ -25,7 +25,7 @@ public class Article {
     private String subtitle;
 
     @NotBlank
-    @Column()
+    @Column(length = 8000)
     private String content;
 
     @Enumerated(EnumType.STRING)
@@ -38,11 +38,13 @@ public class Article {
 
 
     @OneToOne
-    @JoinColumn(name="user_id", referencedColumnName="id", nullable=false)
+    @JoinColumn(referencedColumnName="id", nullable=false)
     private User createdBy;
+
     @OneToOne
-    @JoinColumn(name="user_id", referencedColumnName="id", nullable=false)
+    @JoinColumn(referencedColumnName="id")
     private User updateBy;
+
     private OffsetDateTime updatedAt;
     private Long viewers;
     private Long liked;

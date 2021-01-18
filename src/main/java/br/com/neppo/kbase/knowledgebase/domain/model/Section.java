@@ -26,13 +26,16 @@ public class Section {
     private OffsetDateTime createdAt = OffsetDateTime.now();
 
     @ManyToOne
+    @JoinColumn(referencedColumnName="id", nullable=false)
     private User createdBy;
 
     @ManyToOne
+    @JoinColumn(referencedColumnName="id")
     private User updateBy;
     private OffsetDateTime updatedAt;
 
     @ManyToOne
+    @JoinColumn(referencedColumnName="id", nullable=false)
     private Category category;
 
 }
