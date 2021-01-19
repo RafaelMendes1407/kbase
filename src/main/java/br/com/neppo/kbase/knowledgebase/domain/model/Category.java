@@ -1,6 +1,7 @@
 package br.com.neppo.kbase.knowledgebase.domain.model;
 
 
+import br.com.neppo.kbase.knowledgebase.api.form.CategoryForm;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -34,4 +35,11 @@ public class Category {
 
     @OneToMany
     private List<Section> section;
+
+    public Category convertFromForm(CategoryForm categoryForm) {
+        this.name = categoryForm.getName();
+        this.description = categoryForm.getDescription();
+        this.slug = categoryForm.getSlug();
+        return this;
+    }
 }

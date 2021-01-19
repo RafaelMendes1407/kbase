@@ -1,5 +1,6 @@
 package br.com.neppo.kbase.knowledgebase.api.dto;
 
+import br.com.neppo.kbase.knowledgebase.domain.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,5 +20,15 @@ public class UserDTO {
     @NotBlank
     @Email
     private String email;
+
+    public UserDTO converterToUser(User user){
+        if(user == null){
+            return null;
+        }
+        this.id = user.getId();
+        this.name = user.getName();
+        this.email = user.getEmail();
+        return this;
+    }
 
 }
