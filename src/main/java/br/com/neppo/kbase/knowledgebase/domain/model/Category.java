@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 @Entity
@@ -20,6 +21,16 @@ public class Category {
     private String name;
     private String description;
     private String slug;
+
+    @OneToOne
+    @JoinColumn(referencedColumnName="id")
+    private User createdBy;
+
+    @OneToOne
+    @JoinColumn(referencedColumnName="id")
+    private User updatedBy;
+    private OffsetDateTime createAt = OffsetDateTime.now();
+    private OffsetDateTime updatedAt;
 
     @OneToMany
     private List<Section> section;

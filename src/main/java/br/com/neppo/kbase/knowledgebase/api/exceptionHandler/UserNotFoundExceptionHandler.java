@@ -1,20 +1,18 @@
 package br.com.neppo.kbase.knowledgebase.api.exceptionHandler;
 
-import br.com.neppo.kbase.knowledgebase.api.exceptionHandler.RestModelHandler;
-import br.com.neppo.kbase.knowledgebase.domain.service.serviceException.EmailAlreadyRegisteredException;
+import br.com.neppo.kbase.knowledgebase.domain.service.serviceException.UserNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
-public class EmailExceptionHandler {
+public class UserNotFoundExceptionHandler {
 
-    @ExceptionHandler(EmailAlreadyRegisteredException.class)
-    public ResponseEntity<RestModelHandler> emailHandler(EmailAlreadyRegisteredException exception){
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<RestModelHandler> handler(UserNotFoundException ex){
         RestModelHandler handler = new RestModelHandler();
-        handler.setMessage(exception.getMessage());
+        handler.setMessage(ex.getMessage());
         return new ResponseEntity<>(handler, HttpStatus.BAD_REQUEST);
     }
-
 }

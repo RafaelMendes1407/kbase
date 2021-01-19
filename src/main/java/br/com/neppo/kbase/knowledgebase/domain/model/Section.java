@@ -16,7 +16,7 @@ import java.time.OffsetDateTime;
 public class Section {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotBlank
