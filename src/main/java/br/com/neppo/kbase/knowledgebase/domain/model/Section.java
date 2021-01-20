@@ -1,5 +1,6 @@
 package br.com.neppo.kbase.knowledgebase.domain.model;
 
+import br.com.neppo.kbase.knowledgebase.api.form.SectionForm;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,7 +22,6 @@ public class Section {
 
     @NotBlank
     private String title;
-    private String subtitle;
     private String slug;
     private OffsetDateTime createdAt = OffsetDateTime.now();
 
@@ -37,6 +37,11 @@ public class Section {
     @ManyToOne
     @JoinColumn(referencedColumnName="id", nullable=false)
     private Category category;
+
+    public Section(SectionForm sectionForm){
+        this.title = sectionForm.getTitle();
+        this.slug = sectionForm.getSlug();
+    }
 
 }
 

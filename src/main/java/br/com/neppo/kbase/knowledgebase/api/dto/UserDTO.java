@@ -21,7 +21,7 @@ public class UserDTO {
     @Email
     private String email;
 
-    public UserDTO converterToUser(User user){
+    public UserDTO converterToUserDTO(User user){
         if(user == null){
             return null;
         }

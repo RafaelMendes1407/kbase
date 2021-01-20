@@ -3,6 +3,7 @@ package br.com.neppo.kbase.knowledgebase.domain.service;
 import br.com.neppo.kbase.knowledgebase.domain.model.User;
 import br.com.neppo.kbase.knowledgebase.domain.repository.UserRepository;
 import br.com.neppo.kbase.knowledgebase.domain.service.serviceException.EmailAlreadyRegisteredException;
+import br.com.neppo.kbase.knowledgebase.domain.service.serviceException.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,8 +33,12 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public Optional<User> selectUser(Long id){
-        return userRepository.findById(id);
+    public User selectUser(Long id){
+        Optional<User> user = userRepository.findById(id);
+        if(user.isEmpty()){
+            throw new UserNotFoundException("User not found");
+        }
+        return user.get();
     }
 
 }

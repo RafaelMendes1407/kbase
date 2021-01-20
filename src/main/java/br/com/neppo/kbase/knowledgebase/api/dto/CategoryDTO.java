@@ -34,9 +34,9 @@ public class CategoryDTO {
         this.name = category.getName();
         this.description = category.getDescription();
         this.slug = category.getSlug();
-        this.createdBy = new UserDTO().converterToUser(category.getCreatedBy());
+        this.createdBy = new UserDTO().converterToUserDTO(category.getCreatedBy());
         this.createAt = category.getCreateAt();
-        this.updatedBy = new UserDTO().converterToUser(category.getUpdatedBy());;
+        this.updatedBy = new UserDTO().converterToUserDTO(category.getUpdatedBy());;
         this.updatedAt = category.getUpdatedAt();
         this.section = category.getSection();
     }

@@ -32,7 +32,6 @@ public class CategoryController {
 
     @GetMapping
     public Page<CategoryDTO> getCategories(@PageableDefault(sort="id", direction = Sort.Direction.DESC, page =0, size=10) Pageable page){
-        Page<CategoryDTO> categories = categoryService.getCategories(page);
-        return categories;
+        return categoryService.getCategories(page);
     }
 }
