@@ -7,7 +7,6 @@ import br.com.neppo.kbase.knowledgebase.domain.model.User;
 import br.com.neppo.kbase.knowledgebase.domain.repository.CategoryRepository;
 import br.com.neppo.kbase.knowledgebase.domain.service.serviceException.ResourceAlreadyRegisteredException;
 import br.com.neppo.kbase.knowledgebase.domain.service.serviceException.ResourceNotFoundException;
-import br.com.neppo.kbase.knowledgebase.domain.service.serviceException.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

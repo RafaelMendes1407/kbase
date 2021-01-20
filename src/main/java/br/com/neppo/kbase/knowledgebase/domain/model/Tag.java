@@ -1,5 +1,6 @@
 package br.com.neppo.kbase.knowledgebase.domain.model;
 
+import br.com.neppo.kbase.knowledgebase.api.form.TagForm;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,7 +8,6 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.time.OffsetDateTime;
-import java.util.List;
 
 @Entity
 @Table(name = "tag")
@@ -21,7 +21,7 @@ public class Tag {
 
     @NotBlank
     private String title;
-    private String slug; // ??
+    private String slug;
     private OffsetDateTime createdAt = OffsetDateTime.now();
 
     @OneToOne
@@ -34,8 +34,12 @@ public class Tag {
     private OffsetDateTime updatedAt;
 
     @ManyToOne
-    private Section section;
+    private Category category;
 
+    public Tag(TagForm tagForm){
+        this.title = tagForm.getTitle();
+        this.slug = tagForm.getSlug();
+    }
 
 }
 
