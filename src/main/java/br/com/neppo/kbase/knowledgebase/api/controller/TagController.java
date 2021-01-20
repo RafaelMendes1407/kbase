@@ -6,12 +6,10 @@ import br.com.neppo.kbase.knowledgebase.domain.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestControllerAdvice
 @RequestMapping("/tags")
@@ -26,4 +24,9 @@ public class TagController {
         return new ResponseEntity<>(tagDTO, HttpStatus.CREATED);
     }
 
+    @GetMapping
+    public ResponseEntity<List<TagDTO>> getTags(){
+        List<TagDTO> tags = tagService.getTags();
+        return ResponseEntity.ok(tags);
+    }
 }

@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -59,4 +60,14 @@ public class CategoryService {
         }
         return category.get();
     }
+
+    public List<CategoryDTO> getListCategoriesDTO(List<Category> categories){
+        return CategoryDTO.convertToList(categories);
+    }
+
+    public List<Category> getListCategories(List<Long> categories){
+        return categoryRepository.findAllById(categories);
+    }
+
+
 }

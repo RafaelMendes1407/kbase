@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.validation.ConstraintViolationException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,10 +22,10 @@ public class ApiExceptionHandler {
     private MessageSource messageSource;
 
     @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity<List<RestModelHandler>> constraintHandle(ConstraintViolationException ex){
+    public ResponseEntity<List<RestModelHandler>> constraintHandle(ConstraintViolationException ex) {
         List<RestModelHandler> restHandler = new ArrayList<>();
 
-        ex.getConstraintViolations().forEach( e -> {
+        ex.getConstraintViolations().forEach(e -> {
             RestModelHandler handler = new RestModelHandler();
             handler.setMessage(e.getMessage());
             handler.setField(e.getConstraintDescriptor().toString());

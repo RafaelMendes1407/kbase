@@ -6,6 +6,7 @@ import br.com.neppo.kbase.knowledgebase.domain.model.Category;
 import br.com.neppo.kbase.knowledgebase.domain.model.Section;
 import br.com.neppo.kbase.knowledgebase.domain.repository.SectionRepository;
 import br.com.neppo.kbase.knowledgebase.domain.service.serviceException.ResourceAlreadyRegisteredException;
+import br.com.neppo.kbase.knowledgebase.domain.service.serviceException.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,5 +37,13 @@ public class SectionService {
         section.setCategory(category);
 
         return new SectionDTO(sectionRepository.save(section));
+    }
+
+    public Section getSection(Long idSection){
+        Optional<Section> section = sectionRepository.findById(idSection);
+        if(section.isEmpty()){
+            throw new ResourceNotFoundException("There is no section with this id.");
+        }
+        return section.get();
     }
 }

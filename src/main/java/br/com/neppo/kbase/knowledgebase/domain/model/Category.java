@@ -33,7 +33,7 @@ public class Category {
     private OffsetDateTime createAt = OffsetDateTime.now();
     private OffsetDateTime updatedAt;
 
-    @OneToMany
+    @OneToMany(mappedBy = "category")
     private List<Section> section;
 
     public Category convertFromForm(CategoryForm categoryForm) {

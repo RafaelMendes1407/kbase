@@ -1,5 +1,6 @@
 package br.com.neppo.kbase.knowledgebase.domain.model;
 
+import br.com.neppo.kbase.knowledgebase.api.form.ArticleForm;
 import br.com.neppo.kbase.knowledgebase.domain.constants.ArticleStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -36,6 +37,9 @@ public class Article {
 
     private OffsetDateTime createdAt = OffsetDateTime.now();
 
+    @OneToOne
+    @JoinColumn(referencedColumnName="id", nullable=false)
+    private Section section;
 
     @OneToOne
     @JoinColumn(referencedColumnName="id", nullable=false)
@@ -51,6 +55,12 @@ public class Article {
 
     @ManyToMany
     private List<Tag> tags;
+
+    public Article(ArticleForm articleForm){
+        this.subtitle = articleForm.getSubtitle();
+        this.title = articleForm.getTitle();
+        this.content = articleForm.getContent();
+    }
 }
 
 //    O usuário pode deletar um artigo tanto publicado quanto em rascunho.

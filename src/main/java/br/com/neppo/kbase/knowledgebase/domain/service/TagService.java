@@ -8,6 +8,8 @@ import br.com.neppo.kbase.knowledgebase.domain.repository.TagRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class TagService {
 
@@ -27,5 +29,13 @@ public class TagService {
         tag.setCreatedBy(category.getCreatedBy());
         tag.setCategory(category);
         return new TagDTO(tagRepository.save(tag));
+    }
+
+    public List<Tag> getListTags(List<Long> tags) {
+        return tagRepository.findAllById(tags);
+    }
+
+    public List<TagDTO> getTags(){
+        return TagDTO.convertListTagToListDTO(tagRepository.findAll());
     }
 }
