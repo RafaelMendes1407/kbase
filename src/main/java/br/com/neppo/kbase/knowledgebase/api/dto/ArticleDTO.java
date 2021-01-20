@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.domain.Page;
 
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -43,5 +44,13 @@ public class ArticleDTO {
         this.viewers = article.getViewers();
         this.liked = article.getLiked();
         this.tags = new TagDTO().convertToListOptional(article.getTags());
+    }
+
+    public static Page<ArticleDTO> convertArticlesToPage(Page<Article> article){
+        return article.map(e -> {
+            ArticleDTO articleDTO = new ArticleDTO(e);
+            articleDTO.setContent(null);
+            return articleDTO;
+        });
     }
 }

@@ -2,6 +2,7 @@ package br.com.neppo.kbase.knowledgebase.api.controller;
 
 import br.com.neppo.kbase.knowledgebase.api.dto.CategoryDTO;
 import br.com.neppo.kbase.knowledgebase.api.form.CategoryForm;
+import br.com.neppo.kbase.knowledgebase.domain.model.Category;
 import br.com.neppo.kbase.knowledgebase.domain.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

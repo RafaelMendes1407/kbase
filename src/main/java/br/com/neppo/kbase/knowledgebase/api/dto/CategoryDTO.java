@@ -28,7 +28,7 @@ public class CategoryDTO {
     private UserDTO updatedBy;
     private OffsetDateTime createAt = OffsetDateTime.now();
     private OffsetDateTime updatedAt;
-    private List<Section> section;
+    private List<SectionDTO> section;
 
 
 
@@ -41,7 +41,7 @@ public class CategoryDTO {
         this.createAt = category.getCreateAt();
         this.updatedBy = new UserDTO().converterToUserDTO(category.getUpdatedBy());;
         this.updatedAt = category.getUpdatedAt();
-        this.section = category.getSection();
+        this.section = new SectionDTO().convertTOSectionDTO(category.getSection());
     }
 
     public CategoryDTO optionalCategoryDTO(Category category) {

@@ -2,12 +2,17 @@ package br.com.neppo.kbase.knowledgebase.domain.service;
 
 import br.com.neppo.kbase.knowledgebase.api.dto.ArticleDTO;
 import br.com.neppo.kbase.knowledgebase.api.form.ArticleForm;
+import br.com.neppo.kbase.knowledgebase.domain.constants.ArticleStatus;
 import br.com.neppo.kbase.knowledgebase.domain.model.*;
 import br.com.neppo.kbase.knowledgebase.domain.repository.ArticleRepository;
+import br.com.neppo.kbase.knowledgebase.domain.service.serviceException.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ArticleService {
@@ -42,5 +47,49 @@ public class ArticleService {
         article.setTags(tags);
         article.setSection(section);
         return new ArticleDTO(articleRepository.save(article));
+    }
+
+    public Article getArticleById(Long idArticle) {
+        Optional<Article> article = articleRepository.findById(idArticle);
+        if(article.isEmpty()){
+            throw new ResourceNotFoundException("Article not found");
+        }
+        Long views = article.get().getViewers();
+        article.get().setViewers(views+=1);
+        articleRepository.save(article.get());
+        return article.get();
+    }
+
+    public void publishArticle(Long idArticle) {
+        Article article = this.getArticleById(idArticle);
+        article.setArticleStatus(ArticleStatus.PUBLISH);
+        articleRepository.save(article);
+    }
+
+    public void deleteArticle(Long idArticle) {
+        articleRepository.deleteById(idArticle);
+    }
+
+    public void likeArticle(Long idArticle) {
+        Article article = this.getArticleById(idArticle);
+        Long likes = article.getLiked();
+        article.setLiked(likes += 1);
+        articleRepository.save(article);
+    }
+
+    public Page<ArticleDTO> getPublishedArticles(Pageable page) {
+        Page<Article> articles = articleRepository.findByArticleStatus(ArticleStatus.PUBLISH, page);
+        return ArticleDTO.convertArticlesToPage(articles);
+    }
+
+    public Page<ArticleDTO> getDraftArticles(Pageable page) {
+        Page<Article> articles = articleRepository.findByArticleStatus(ArticleStatus.DRAFT, page);
+        return ArticleDTO.convertArticlesToPage(articles);
+    }
+
+    public Page<ArticleDTO> getUserArticles(Pageable page) {
+        User user = userService.selectUser(1L);
+        Page<Article> articles = articleRepository.findByUser(user);
+        return ArticleDTO.convertArticlesToPage(articles);
     }
 }

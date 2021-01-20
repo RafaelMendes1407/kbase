@@ -3,6 +3,7 @@ package br.com.neppo.kbase.knowledgebase.domain.service;
 import br.com.neppo.kbase.knowledgebase.api.dto.CategoryDTO;
 import br.com.neppo.kbase.knowledgebase.api.form.CategoryForm;
 import br.com.neppo.kbase.knowledgebase.domain.model.Category;
+import br.com.neppo.kbase.knowledgebase.domain.model.Section;
 import br.com.neppo.kbase.knowledgebase.domain.model.User;
 import br.com.neppo.kbase.knowledgebase.domain.repository.CategoryRepository;
 import br.com.neppo.kbase.knowledgebase.domain.service.serviceException.ResourceAlreadyRegisteredException;
@@ -18,19 +19,19 @@ import java.util.Optional;
 @Service
 public class CategoryService {
 
-    CategoryRepository categoryRepository;
-    UserService userService;
+    private CategoryRepository categoryRepository;
+    private UserService userService;
 
     @Autowired
-    public CategoryService(CategoryRepository categoryRepository, UserService userService){
+    public CategoryService(CategoryRepository categoryRepository, UserService userService) {
         this.categoryRepository = categoryRepository;
         this.userService = userService;
     }
 
-    public CategoryDTO saveCategory(CategoryForm categoryForm){
+    public CategoryDTO saveCategory(CategoryForm categoryForm) {
         User user = userService.selectUser(categoryForm.getUserId());
         Optional<Category> categoryFind = categoryRepository.findByName(categoryForm.getName());
-        if(categoryFind.isPresent()){
+        if (categoryFind.isPresent()) {
             throw new ResourceAlreadyRegisteredException("Category already registered");
         }
         Category category = new Category().convertFromForm(categoryForm);
@@ -40,11 +41,11 @@ public class CategoryService {
 
     }
 
-    public void deleteCategory(Category category){
+    public void deleteCategory(Category category) {
         categoryRepository.deleteById(category.getId());
     }
 
-    public long countCategory(){
+    public long countCategory() {
         return categoryRepository.count();
     }
 
@@ -55,19 +56,18 @@ public class CategoryService {
 
     public Category findCategory(Long categoryId) {
         Optional<Category> category = categoryRepository.findById(categoryId);
-        if(category.isEmpty()){
+        if (category.isEmpty()) {
             throw new ResourceNotFoundException("Resource not Found");
         }
         return category.get();
     }
 
-    public List<CategoryDTO> getListCategoriesDTO(List<Category> categories){
+    public List<CategoryDTO> getListCategoriesDTO(List<Category> categories) {
         return CategoryDTO.convertToList(categories);
     }
 
-    public List<Category> getListCategories(List<Long> categories){
+    public List<Category> getListCategories(List<Long> categories) {
         return categoryRepository.findAllById(categories);
     }
-
 
 }

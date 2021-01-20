@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.OffsetDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Data
@@ -46,4 +48,7 @@ public class SectionDTO {
         return this;
     }
 
+    public List<SectionDTO> convertTOSectionDTO(List<Section> section) {
+        return section.stream().map(e -> new SectionDTO().optionalSectionDTO(e)).collect(Collectors.toList());
+    }
 }
