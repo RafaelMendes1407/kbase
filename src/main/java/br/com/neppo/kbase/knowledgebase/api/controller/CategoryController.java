@@ -24,6 +24,9 @@ public class CategoryController {
     @Autowired
     CategoryService categoryService;
 
+    @Autowired
+    TokenService tokenService;
+
     @PostMapping
     public ResponseEntity<CategoryDTO> newCategory(@Valid @RequestBody CategoryForm categoryForm, HttpServletRequest request){
         String token = request.getHeader("Authorization");

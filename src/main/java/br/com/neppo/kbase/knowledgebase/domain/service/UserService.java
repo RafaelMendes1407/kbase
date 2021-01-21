@@ -1,33 +1,49 @@
 package br.com.neppo.kbase.knowledgebase.domain.service;
 
 import br.com.neppo.kbase.knowledgebase.api.form.UserForm;
+import br.com.neppo.kbase.knowledgebase.domain.model.Profile;
 import br.com.neppo.kbase.knowledgebase.domain.model.User;
 import br.com.neppo.kbase.knowledgebase.domain.repository.UserRepository;
 import br.com.neppo.kbase.knowledgebase.domain.service.serviceException.EmailAlreadyRegisteredException;
 import br.com.neppo.kbase.knowledgebase.domain.service.serviceException.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
 public class UserService {
 
+    private ProfileService profileService;
     private UserRepository userRepository;
 
     @Autowired
-    public UserService(UserRepository userRepository){
+    public UserService(UserRepository userRepository, ProfileService profileService){
         this.userRepository = userRepository;
+        this.profileService = profileService;
     }
 
-    public User saveUser(User user){
-        Optional<User> userEmail = userRepository.findByEmail(user.getEmail());
+    public User saveUser(UserForm userForm){
+        Optional<User> userEmail = userRepository.findByEmail(userForm.getEmail());
         if(userEmail.isPresent()){
-            if(userEmail.get().getEmail().equals(user.getEmail())){
+            if(userEmail.get().getEmail().equals(userForm.getEmail())){
                 throw new EmailAlreadyRegisteredException("Email Already Registered");
             }
         }
-        return userRepository.save(user);
+        User newUser = new User(userForm);
+
+        if(userForm.getProfile() != null){
+            Profile profile = profileService.getProfileById(userForm.getProfile());
+            List<Profile> profiles = new ArrayList<>();
+            profiles.add(profile);
+            newUser.setProfile(profiles);
+        }
+        newUser.setPassword(new BCryptPasswordEncoder().encode(newUser.getPassword()));
+        return userRepository.save(newUser);
     }
 
     public User updateUser(UserForm userForm, Long id){

@@ -23,6 +23,9 @@ public class SectionController {
     @Autowired
     SectionService sectionService;
 
+    @Autowired
+    TokenService tokenService;
+
     @PostMapping
     public ResponseEntity<SectionDTO> createSection(@Valid @RequestBody SectionForm sectionForm, HttpServletRequest request){
         String token = request.getHeader("Authorization");

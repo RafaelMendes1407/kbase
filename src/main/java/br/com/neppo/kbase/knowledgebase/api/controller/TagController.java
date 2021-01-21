@@ -20,6 +20,9 @@ public class TagController {
     @Autowired
     TagService tagService;
 
+    @Autowired
+    TokenService tokenService;
+
     @PostMapping
     public ResponseEntity<TagDTO> createNewTag(@Valid @RequestBody TagForm tagForm, HttpServletRequest request){
         String token = request.getHeader("Authorization");

@@ -1,5 +1,6 @@
 package br.com.neppo.kbase.knowledgebase.domain.model;
 
+import br.com.neppo.kbase.knowledgebase.api.form.UserForm;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -68,6 +69,13 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public User (UserForm userForm){
+        this.name = userForm.getName();
+        this.email = userForm.getEmail();
+        this.password = userForm.getPassword();
+        this.domain = userForm.getDomain();
     }
 }
 

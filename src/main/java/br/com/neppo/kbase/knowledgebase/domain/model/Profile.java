@@ -2,6 +2,7 @@ package br.com.neppo.kbase.knowledgebase.domain.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
@@ -10,6 +11,7 @@ import javax.persistence.*;
 @Entity
 @Table( name = "profile")
 @AllArgsConstructor
+@NoArgsConstructor
 public class Profile implements GrantedAuthority {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

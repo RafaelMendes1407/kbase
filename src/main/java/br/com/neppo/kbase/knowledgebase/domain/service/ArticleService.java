@@ -69,8 +69,13 @@ public class ArticleService {
         articleRepository.save(article);
     }
 
-    public void deleteArticle(Long idArticle) {
-        articleRepository.deleteById(idArticle);
+    public void deleteArticle(Long idArticle, Long userId) {
+        User user = userService.selectUser(userId);
+        Article article = this.getArticleById(idArticle);
+        if(user.getId().equals(article.getCreatedBy())){
+            articleRepository.deleteById(idArticle);
+        }
+        throw new ResourceNotFoundException("Only the author can exclude this article");
     }
 
     public void likeArticle(Long idArticle) {
@@ -90,13 +95,12 @@ public class ArticleService {
 
     public Page<ArticleDTO> getDraftArticles(Pageable page, Long id) {
         User user = userService.selectUser(id);
-        Page<Article> articles = articleRepository.findByArticleStatusCreatedBy(ArticleStatus.DRAFT, page, id);
+        Page<Article> articles = articleRepository.findByArticleStatusCreatedBy(ArticleStatus.DRAFT, id, page);
         return ArticleDTO.convertArticlesToPage(articles);
     }
 
-    public Page<ArticleDTO> getUserArticles(Pageable page) {
-        // TODO
-        Page<Article> articles = articleRepository.findByCreatedBy(1L, page);
+    public Page<ArticleDTO> getUserArticles(Pageable page, Long id) {
+        Page<Article> articles = articleRepository.findByCreatedBy(id, page);
         return ArticleDTO.convertArticlesToPage(articles);
     }
 }

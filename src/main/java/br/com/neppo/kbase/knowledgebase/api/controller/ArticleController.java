@@ -12,7 +12,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -25,10 +24,13 @@ public class ArticleController {
     @Autowired
     ArticleService articleService;
 
+    @Autowired
+    TokenService tokenService;
+
     @PostMapping
     public ResponseEntity<ArticleDTO> createArticle(@Valid @RequestBody ArticleForm articleForm, HttpServletRequest request){
         String token = request.getHeader("Authorization");
-        Long id = new TokenService().getUserId(token);
+        Long id = tokenService.getUserId(token.substring(7, token.length()));
         ArticleDTO article = articleService.createNewArticle(articleForm, id);
         return new ResponseEntity<>(article, HttpStatus.CREATED);
     }
@@ -52,8 +54,10 @@ public class ArticleController {
     }
 
     @DeleteMapping("/{idArticle}")
-    public ResponseEntity<Void> deleteArticle(@PathVariable Long idArticle){
-        articleService.deleteArticle(idArticle);
+    public ResponseEntity<Void> deleteArticle(@PathVariable Long idArticle, HttpServletRequest request){
+        String token = request.getHeader("Authorization");
+        Long id = tokenService.getUserId(token.substring(7, token.length()));
+        articleService.deleteArticle(idArticle, id);
         return ResponseEntity.noContent().build();
     }
 
@@ -79,8 +83,11 @@ public class ArticleController {
     }
 
     @GetMapping("/user")
-    public ResponseEntity<Page<ArticleDTO>> getUserArticles(@PageableDefault(sort="id", direction = Sort.Direction.DESC, page =0, size=20) Pageable page){
-        Page<ArticleDTO> article = articleService.getUserArticles(page);
+    public ResponseEntity<Page<ArticleDTO>> getUserArticles(@PageableDefault(sort="id", direction = Sort.Direction.DESC, page =0, size=20) Pageable page
+                , HttpServletRequest request){
+        String token = request.getHeader("Authorization");
+        Long id = tokenService.getUserId(token.substring(7, token.length()));
+        Page<ArticleDTO> article = articleService.getUserArticles(page, id);
         return new ResponseEntity<>(article, HttpStatus.OK);
     }
 }
