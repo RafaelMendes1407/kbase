@@ -55,6 +55,9 @@ public class ArticleService {
             throw new ResourceNotFoundException("Article not found");
         }
         Long views = article.get().getViewers();
+        if(views == null){
+            views = 0L;
+        }
         article.get().setViewers(views+=1);
         articleRepository.save(article.get());
         return article.get();
@@ -73,6 +76,9 @@ public class ArticleService {
     public void likeArticle(Long idArticle) {
         Article article = this.getArticleById(idArticle);
         Long likes = article.getLiked();
+        if(likes == null){
+            likes = 0L;
+        }
         article.setLiked(likes += 1);
         articleRepository.save(article);
     }
@@ -88,8 +94,8 @@ public class ArticleService {
     }
 
     public Page<ArticleDTO> getUserArticles(Pageable page) {
-        User user = userService.selectUser(1L);
-        Page<Article> articles = articleRepository.findByUser(user);
+        // TODO
+        Page<Article> articles = articleRepository.findByCreatedBy(1L, page);
         return ArticleDTO.convertArticlesToPage(articles);
     }
 }
