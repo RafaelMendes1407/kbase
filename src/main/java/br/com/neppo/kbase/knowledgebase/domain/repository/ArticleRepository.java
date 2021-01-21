@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ArticleRepository extends JpaRepository<Article, Long> {
+    Page<Article> findByArticleStatusCreatedBy(ArticleStatus status, Pageable page, Long id);
     Page<Article> findByArticleStatus(ArticleStatus status, Pageable page);
     Page<Article> findByCreatedBy(Long userId, Pageable page);
 }

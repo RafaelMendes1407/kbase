@@ -1,4 +1,4 @@
-package br.com.neppo.kbase.knowledgebase.api.core;
+package br.com.neppo.kbase.knowledgebase.api.security;
 
 import br.com.neppo.kbase.knowledgebase.domain.model.User;
 import br.com.neppo.kbase.knowledgebase.domain.repository.UserRepository;

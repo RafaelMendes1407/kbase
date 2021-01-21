@@ -2,6 +2,7 @@ package br.com.neppo.kbase.knowledgebase.api.controller;
 
 import br.com.neppo.kbase.knowledgebase.api.dto.CategoryDTO;
 import br.com.neppo.kbase.knowledgebase.api.form.CategoryForm;
+import br.com.neppo.kbase.knowledgebase.api.security.TokenService;
 import br.com.neppo.kbase.knowledgebase.domain.model.Category;
 import br.com.neppo.kbase.knowledgebase.domain.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @RestControllerAdvice
@@ -23,11 +25,10 @@ public class CategoryController {
     CategoryService categoryService;
 
     @PostMapping
-    public ResponseEntity<CategoryDTO> newCategory(@Valid @RequestBody CategoryForm categoryForm){
-        CategoryDTO category = categoryService.saveCategory(categoryForm);
-        if(category == null) {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<CategoryDTO> newCategory(@Valid @RequestBody CategoryForm categoryForm, HttpServletRequest request){
+        String token = request.getHeader("Authorization");
+        Long id = new TokenService().getUserId(token);
+        CategoryDTO category = categoryService.saveCategory(categoryForm, id);
         return new ResponseEntity<>(category, HttpStatus.CREATED);
     }
 

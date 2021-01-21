@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 @Data
 @AllArgsConstructor
@@ -14,8 +13,6 @@ public class CategoryForm {
 
     @NotBlank
     private String name;
-    @NotNull
-    private Long userId;
     private String description;
     private String slug;
 

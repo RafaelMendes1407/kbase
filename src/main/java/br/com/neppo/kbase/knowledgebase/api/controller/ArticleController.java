@@ -2,6 +2,7 @@ package br.com.neppo.kbase.knowledgebase.api.controller;
 
 import br.com.neppo.kbase.knowledgebase.api.dto.ArticleDTO;
 import br.com.neppo.kbase.knowledgebase.api.form.ArticleForm;
+import br.com.neppo.kbase.knowledgebase.api.security.TokenService;
 import br.com.neppo.kbase.knowledgebase.domain.model.Article;
 import br.com.neppo.kbase.knowledgebase.domain.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +12,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @RestControllerAdvice
@@ -23,8 +26,10 @@ public class ArticleController {
     ArticleService articleService;
 
     @PostMapping
-    public ResponseEntity<ArticleDTO> createArticle(@Valid @RequestBody ArticleForm articleForm){
-        ArticleDTO article = articleService.createNewArticle(articleForm);
+    public ResponseEntity<ArticleDTO> createArticle(@Valid @RequestBody ArticleForm articleForm, HttpServletRequest request){
+        String token = request.getHeader("Authorization");
+        Long id = new TokenService().getUserId(token);
+        ArticleDTO article = articleService.createNewArticle(articleForm, id);
         return new ResponseEntity<>(article, HttpStatus.CREATED);
     }
 
@@ -65,8 +70,11 @@ public class ArticleController {
     }
 
     @GetMapping("/draft")
-    public ResponseEntity<Page<ArticleDTO>> getAllDraftArticles(@PageableDefault(sort="id", direction = Sort.Direction.DESC, page =0, size=20) Pageable page){
-        Page<ArticleDTO> article = articleService.getDraftArticles(page);
+    public ResponseEntity<Page<ArticleDTO>> getAllDraftArticles(@PageableDefault(sort="id", direction = Sort.Direction.DESC, page =0, size=20) Pageable page,
+        HttpServletRequest request){
+        String token = request.getHeader("Authorization");
+        Long id = new TokenService().getUserId(token);
+        Page<ArticleDTO> article = articleService.getDraftArticles(page, id);
         return new ResponseEntity<>(article, HttpStatus.OK);
     }
 

@@ -28,15 +28,14 @@ public class CategoryService {
         this.userService = userService;
     }
 
-    public CategoryDTO saveCategory(CategoryForm categoryForm) {
-        User user = userService.selectUser(categoryForm.getUserId());
+    public CategoryDTO saveCategory(CategoryForm categoryForm, Long id) {
+        User user = userService.selectUser(id);
         Optional<Category> categoryFind = categoryRepository.findByName(categoryForm.getName());
         if (categoryFind.isPresent()) {
             throw new ResourceAlreadyRegisteredException("Category already registered");
         }
         Category category = new Category().convertFromForm(categoryForm);
         category.setCreatedBy(user);
-
         return new CategoryDTO(categoryRepository.save(category));
 
     }

@@ -36,9 +36,9 @@ public class ArticleService {
     }
 
 
-    public ArticleDTO createNewArticle(ArticleForm articleForm) {
+    public ArticleDTO createNewArticle(ArticleForm articleForm, Long id) {
         List<Category> category = categoryService.getListCategories(articleForm.getCategoryId());
-        User user = userService.selectUser(articleForm.getUserId());
+        User user = userService.selectUser(id);
         Section section = sectionService.getSection(articleForm.getSectionId());
         List<Tag> tags = tagService.getListTags(articleForm.getTags());
         Article article = new Article(articleForm);
@@ -88,8 +88,9 @@ public class ArticleService {
         return ArticleDTO.convertArticlesToPage(articles);
     }
 
-    public Page<ArticleDTO> getDraftArticles(Pageable page) {
-        Page<Article> articles = articleRepository.findByArticleStatus(ArticleStatus.DRAFT, page);
+    public Page<ArticleDTO> getDraftArticles(Pageable page, Long id) {
+        User user = userService.selectUser(id);
+        Page<Article> articles = articleRepository.findByArticleStatusCreatedBy(ArticleStatus.DRAFT, page, id);
         return ArticleDTO.convertArticlesToPage(articles);
     }
 

@@ -15,8 +15,6 @@ public class SectionForm {
     @NotBlank
     private String title;
     @NotNull
-    private Long userId;
-    @NotNull
     private Long categoryId;
     private String slug;
 

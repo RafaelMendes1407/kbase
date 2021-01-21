@@ -1,5 +1,6 @@
 package br.com.neppo.kbase.knowledgebase.domain.service;
 
+import br.com.neppo.kbase.knowledgebase.api.form.UserForm;
 import br.com.neppo.kbase.knowledgebase.domain.model.User;
 import br.com.neppo.kbase.knowledgebase.domain.repository.UserRepository;
 import br.com.neppo.kbase.knowledgebase.domain.service.serviceException.EmailAlreadyRegisteredException;
@@ -29,7 +30,18 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public User updateUser(User user){
+    public User updateUser(UserForm userForm, Long id){
+        User user = this.selectUser(id);
+        if(!user.getName().equals(userForm.getName())){
+            user.setName(userForm.getName());
+        }
+        if(!user.getPassword().equals(userForm.getPassword())){
+            user.setPassword(userForm.getPassword());
+        }
+        if(!user.getDomain().equals(userForm.getDomain())){
+            user.setDomain(userForm.getDomain());
+        }
+
         return userRepository.save(user);
     }
 

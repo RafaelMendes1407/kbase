@@ -16,7 +16,5 @@ public class TagForm {
     private String title;
     private String slug;
     @NotNull
-    private Long userId;
-    @NotNull
     private Long categoryId;
 }

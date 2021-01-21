@@ -2,12 +2,14 @@ package br.com.neppo.kbase.knowledgebase.api.controller;
 
 import br.com.neppo.kbase.knowledgebase.api.dto.TagDTO;
 import br.com.neppo.kbase.knowledgebase.api.form.TagForm;
+import br.com.neppo.kbase.knowledgebase.api.security.TokenService;
 import br.com.neppo.kbase.knowledgebase.domain.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -19,8 +21,10 @@ public class TagController {
     TagService tagService;
 
     @PostMapping
-    public ResponseEntity<TagDTO> createNewTag(@Valid @RequestBody TagForm tagForm){
-        TagDTO tagDTO = tagService.createNewTag(tagForm);
+    public ResponseEntity<TagDTO> createNewTag(@Valid @RequestBody TagForm tagForm, HttpServletRequest request){
+        String token = request.getHeader("Authorization");
+        Long id = new TokenService().getUserId(token);
+        TagDTO tagDTO = tagService.createNewTag(tagForm, id);
         return new ResponseEntity<>(tagDTO, HttpStatus.CREATED);
     }
 

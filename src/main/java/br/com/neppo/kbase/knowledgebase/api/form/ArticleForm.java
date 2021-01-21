@@ -24,9 +24,6 @@ public class ArticleForm {
     private List<Long> categoryId;
 
     @NotNull
-    private Long userId;
-
-    @NotNull
     private Long sectionId;
 
     private List<Long> tags;
