@@ -77,7 +77,7 @@ public class ArticleController {
     public ResponseEntity<Page<ArticleDTO>> getAllDraftArticles(@PageableDefault(sort="id", direction = Sort.Direction.DESC, page =0, size=20) Pageable page,
         HttpServletRequest request){
         String token = request.getHeader("Authorization");
-        Long id = new TokenService().getUserId(token);
+        Long id = tokenService.getUserId(token.substring(7, token.length()));
         Page<ArticleDTO> article = articleService.getDraftArticles(page, id);
         return new ResponseEntity<>(article, HttpStatus.OK);
     }

@@ -29,7 +29,7 @@ public class SectionController {
     @PostMapping
     public ResponseEntity<SectionDTO> createSection(@Valid @RequestBody SectionForm sectionForm, HttpServletRequest request){
         String token = request.getHeader("Authorization");
-        Long id = new TokenService().getUserId(token);
+        Long id = tokenService.getUserId(token.substring(7, token.length()));
         SectionDTO section = sectionService.createSection(sectionForm, id);
         return new ResponseEntity<>(section, HttpStatus.CREATED);
     }

@@ -95,12 +95,13 @@ public class ArticleService {
 
     public Page<ArticleDTO> getDraftArticles(Pageable page, Long id) {
         User user = userService.selectUser(id);
-        Page<Article> articles = articleRepository.findByArticleStatusCreatedBy(ArticleStatus.DRAFT, id, page);
+        Page<Article> articles = articleRepository.getArticlesByStatusAndUser(ArticleStatus.DRAFT, user, page);
         return ArticleDTO.convertArticlesToPage(articles);
     }
 
     public Page<ArticleDTO> getUserArticles(Pageable page, Long id) {
-        Page<Article> articles = articleRepository.findByCreatedBy(id, page);
+        User user = userService.selectUser(id);
+        Page<Article> articles = articleRepository.findByCreatedBy(user, page);
         return ArticleDTO.convertArticlesToPage(articles);
     }
 }

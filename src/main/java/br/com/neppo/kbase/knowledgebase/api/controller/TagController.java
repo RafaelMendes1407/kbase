@@ -26,7 +26,7 @@ public class TagController {
     @PostMapping
     public ResponseEntity<TagDTO> createNewTag(@Valid @RequestBody TagForm tagForm, HttpServletRequest request){
         String token = request.getHeader("Authorization");
-        Long id = new TokenService().getUserId(token);
+        Long id = tokenService.getUserId(token.substring(7, token.length()));
         TagDTO tagDTO = tagService.createNewTag(tagForm, id);
         return new ResponseEntity<>(tagDTO, HttpStatus.CREATED);
     }

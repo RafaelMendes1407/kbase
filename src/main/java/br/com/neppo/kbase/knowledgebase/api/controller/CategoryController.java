@@ -3,7 +3,6 @@ package br.com.neppo.kbase.knowledgebase.api.controller;
 import br.com.neppo.kbase.knowledgebase.api.dto.CategoryDTO;
 import br.com.neppo.kbase.knowledgebase.api.form.CategoryForm;
 import br.com.neppo.kbase.knowledgebase.api.security.TokenService;
-import br.com.neppo.kbase.knowledgebase.domain.model.Category;
 import br.com.neppo.kbase.knowledgebase.domain.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -30,7 +29,7 @@ public class CategoryController {
     @PostMapping
     public ResponseEntity<CategoryDTO> newCategory(@Valid @RequestBody CategoryForm categoryForm, HttpServletRequest request){
         String token = request.getHeader("Authorization");
-        Long id = new TokenService().getUserId(token);
+        Long id = tokenService.getUserId(token.substring(7, token.length()));
         CategoryDTO category = categoryService.saveCategory(categoryForm, id);
         return new ResponseEntity<>(category, HttpStatus.CREATED);
     }
